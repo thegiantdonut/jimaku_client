@@ -27,7 +27,8 @@ const convert = require('xml-js')
 Vue.use(VueYoutube)
 Vue.use(Vuetify)
 translate.engine = 'google'
-translate.key = 'AIzaSyBriX23hQ124vGeyo4_NOVwvgLlPkKxDqQ'
+translate.key = 'AIzaSyDxS2jKXrE89JE0q2Gmw80CVFu38pxhL6k'
+// AIzaSyBriX23hQ124vGeyo4_NOVwvgLlPkKxDqQ
 
 export default {
   data () {
@@ -43,8 +44,12 @@ export default {
       dark: true
     }
   },
+  mounted () {
+    this.go()
+  },
   methods: {
     go () {
+      console.log('go is called')
       let id = this.$route.query.videoid
       this.items = []
       this.$refs.youtube.player.loadVideoById(id)

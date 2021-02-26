@@ -11,9 +11,12 @@ import Vue from 'vue'
 import VueYoutube from 'vue-youtube'
 import vid from './VideoBox'
 Vue.use(VueYoutube)
-const apikey = 'AIzaSyBriX23hQ124vGeyo4_NOVwvgLlPkKxDqQ'
+const apikey = 'AIzaSyDxS2jKXrE89JE0q2Gmw80CVFu38pxhL6k'
 let result, lang
 export default {
+  props: {
+    apikey
+  },
   components: {
     vid
   },

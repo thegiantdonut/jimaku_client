@@ -2,7 +2,7 @@
   <div id="app">
     <v-app>
       <v-toolbar dense>
-            <v-toolbar-title>Jimaku</v-toolbar-title>
+            <v-toolbar-title style="cursor: pointer" @click="$router.push('/')">Jimaku</v-toolbar-title>
             <v-text-field
                     v-model="key1"
                     hide-details
@@ -31,7 +31,8 @@ export default ({
   name: 'app',
   data: function () {
     return {
-      key1: ''
+      key1: '',
+      apikey: 'AIzaSyDfgzWTkTn_xzB56TuhaLcxtvbggR2uows'
     }
   },
   methods: {
