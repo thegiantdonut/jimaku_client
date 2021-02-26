@@ -3,16 +3,11 @@
     <v-container>
       <div id="wrapper">
         <youtube videoid="lG0Ys-2d4MA" ref="youtube"/>
-        <v-btn @click="go" dark>Fetch</v-btn>
-        <v-data-table
-        :headers="headers"
-        :items="items"
-        :items-per-page="100"
-        :show-select="true"
-        :single-select="true"
-        :fixed-header="true"
-        @click:row="onRowClick"
-        ></v-data-table>
+          <virtual-list style="height: 360px; overflow-y: auto;" 
+            :data-key="'uid'"
+            :data-sources="items"
+            :data-component="itemComponent"
+          />
       </div>
     </v-container>
   </v-app>
@@ -23,13 +18,15 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import VueYoutube from 'vue-youtube'
 import translate from 'translate'
+import VirtualList from 'vue-virtual-scroll-list'
+
 const convert = require('xml-js')
 Vue.use(VueYoutube)
 Vue.use(Vuetify)
+Vue.component('virtual-list', VirtualList)
 translate.engine = 'google'
 translate.key = 'AIzaSyDxS2jKXrE89JE0q2Gmw80CVFu38pxhL6k'
 // AIzaSyBriX23hQ124vGeyo4_NOVwvgLlPkKxDqQ
-
 export default {
   data () {
     return {
@@ -39,6 +36,8 @@ export default {
         { text: 'Translation', value: 'trans' }
       ],
       items: [],
+      itemComponent: Item,
+        itemo: [{uid: 'unique_1', text: 'abc'}, {uid: 'unique_2', text: 'xyz'}, ...],
       videourl: 'https://www.youtube.com/watch?v=asnQGz7BdfI',
       videoid: 'asnQGz7BdfI',
       dark: true
@@ -66,7 +65,6 @@ export default {
         .then(text => {
           result = convert.xml2json(text, {compact: true, spaces: 4})
           result = JSON.parse(result)
-          console.log(result)
           for (let i = 0; i < result.transcript.text.length; i++) {
             // translate(result.transcript.text[i]._text, 'ja')
             //  .then((res) => {

@@ -19,6 +19,7 @@
     "translate": "^1.2.1",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
+    "vue-virtual-scroll-list": "^2.3.2",
     "vue-youtube": "^1.4.0",
     "vuetify": "^2.4.4",
     "xml-js": "^1.6.11"
