@@ -10,9 +10,10 @@
                     rounded
                     dense
                     single-line
+                    v-on:keydown.enter="search"
                     append-icon="mdi-magnify" class="shrink mx-4">
             </v-text-field>
-            <v-btn @click="search" :to="{ path: 'search', query: { q: this.key1 } }" rounded>Go</v-btn>
+            <v-btn @click="search" rounded>Go</v-btn>
         </v-toolbar>
       <router-view ref="cld"></router-view>
     </v-app>
@@ -22,6 +23,7 @@
 <script>
 import Vue from 'vue'
 import Vuetify from 'vuetify'
+import router from './router'
 
 Vue.use(Vuetify)
 
@@ -33,8 +35,10 @@ export default ({
     }
   },
   methods: {
-    search () {
-      this.$refs.cld.search()
+    search (event) {
+      if (event.keyCode === 13 || event.keyCode === undefined) {
+        router.push({ name: 'search', query: {q: this.key1} })
+      }
     }
   }
 })

@@ -24,8 +24,11 @@ export default {
       videoid: 'videoid'
     }
   },
+  created () {
+    this.fetchData()
+  },
   methods: {
-    search () {
+    fetchData () {
       let id = this.$youtube.getIdFromUrl(this.$route.query.q)
       if (id != null) {
         // its url
@@ -50,6 +53,9 @@ export default {
           }
         })
     }
+  },
+  watch: {
+    '$route': 'fetchData'
   },
   onRowClick: function () {
   }
