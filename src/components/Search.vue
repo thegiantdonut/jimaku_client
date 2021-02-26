@@ -1,6 +1,8 @@
 <template>
   <v-app>
-    <vid :title="title" :desc="desc" :pic="pic" :videoid="videoid"> </vid>
+    <li v-for="res in results" v-bind:key="res.title">
+      <vid :title="res.title" :desc="res.desc" :pic="res.pic" :videoid="res.videoid"> </vid>
+    </li>
   </v-app>
 </template>
 
@@ -10,7 +12,6 @@ import VueYoutube from 'vue-youtube'
 import vid from './VideoBox'
 Vue.use(VueYoutube)
 const apikey = 'AIzaSyBriX23hQ124vGeyo4_NOVwvgLlPkKxDqQ'
-
 let result, lang
 export default {
   components: {
@@ -18,10 +19,7 @@ export default {
   },
   data () {
     return {
-      title: 'test',
-      desc: 'desc',
-      pic: 'picurl',
-      videoid: 'videoid'
+      results: []
     }
   },
   created () {
@@ -29,6 +27,7 @@ export default {
   },
   methods: {
     fetchData () {
+      this.results = []
       let id = this.$youtube.getIdFromUrl(this.$route.query.q)
       if (id != null) {
         // its url
@@ -45,10 +44,12 @@ export default {
               .then(response => response.text())
               .then(text => {
                 result = JSON.parse(text)
-                this.title = result.items[0].snippet.title
-                this.desc = result.items[0].snippet.description.slice(0, 100)
-                this.pic = result.items[0].snippet.thumbnails.medium.url
-                this.videoid = result.items[0].id
+                this.results.push({
+                  title: result.items[0].snippet.title,
+                  desc: result.items[0].snippet.description.slice(0, 100),
+                  pic: result.items[0].snippet.thumbnails.medium.url,
+                  videoid: result.items[0].id
+                })
               })
           }
         })

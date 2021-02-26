@@ -3,7 +3,7 @@
     <v-container>
       <div class="flex">
         <img class="item" v-bind:src="pic">
-        <router-link class="title"  :to="{ path: 'video', query: { videoid: this.videoid }}">{{ title }}</router-link>
+        <router-link class="title"  :to="{ path: 'video', query: { videoid: videoid }}">{{ title }}</router-link>
         <p class="description">{{desc}}</p>
       </div>
     </v-container>
