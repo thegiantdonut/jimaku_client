@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <li v-for="res in results" v-bind:key="res.title">
+    <li id="result" v-for="res in results" v-bind:key="res.title">
       <vid :title="res.title" :desc="res.desc" :pic="res.pic" :videoid="res.videoid"> </vid>
     </li>
   </v-app>
@@ -75,5 +75,8 @@ h1{
 }
 #wrapper{
   padding:0px,100px
+}
+#id{
+  padding-left:1001px
 }
 </style>
