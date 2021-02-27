@@ -3,8 +3,6 @@
     <v-container>
       <div id="wrapper">
         <youtube videoid="lG0Ys-2d4MA" ref="youtube"/>
-          
-          
       </div>
     </v-container>
   </v-app>
@@ -21,6 +19,7 @@ Vue.use(Vuetify)
 translate.engine = 'google'
 translate.key = 'AIzaSyDxS2jKXrE89JE0q2Gmw80CVFu38pxhL6k'
 // AIzaSyBriX23hQ124vGeyo4_NOVwvgLlPkKxDqQ
+
 export default {
   data () {
     return {
@@ -30,7 +29,7 @@ export default {
         { text: 'Translation', value: 'trans' }
       ],
       items: [],
-      itemComponent: Item,
+
       videourl: 'https://www.youtube.com/watch?v=asnQGz7BdfI',
       videoid: 'asnQGz7BdfI',
       dark: true
@@ -40,8 +39,7 @@ export default {
     this.go()
   },
   methods: {
-    go () {
-      console.log('go is called')
+    go () { 
       let id = this.$route.query.videoid
       this.items = []
       this.$refs.youtube.player.loadVideoById(id)
@@ -58,6 +56,7 @@ export default {
         .then(text => {
           result = convert.xml2json(text, {compact: true, spaces: 4})
           result = JSON.parse(result)
+          console.log(result)
           for (let i = 0; i < result.transcript.text.length; i++) {
             // translate(result.transcript.text[i]._text, 'ja')
             //  .then((res) => {
