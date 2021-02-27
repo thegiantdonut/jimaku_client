@@ -3,6 +3,37 @@
     <v-container>
       <div id="wrapper">
         <youtube videoid="lG0Ys-2d4MA" ref="youtube"/>
+        <v-card
+        id="scroll"
+        elevation="16"
+        max-width="400"
+        class="mx-auto"
+        >
+        <v-virtual-scroll
+          
+          :items="itemo"
+          :item-height="65"
+          height="600"
+        >
+          <template v-slot="{ item }">
+            <v-list-item :key="item.id" :value="item.id">
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ items[0].original }}
+                </v-list-item-title>
+                <v-list-item-subtitle>
+                  {{ items[0].trans }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider></v-divider>
+          </template>
+        </v-virtual-scroll>
+        </v-card>
+        <v-card id="captioncard" max-width = 640 min-height = 180>
+          <v-card-title>{{captions[0].original}}</v-card-title>
+          <v-card-subtitle>{{captions[0].translated}}</v-card-subtitle>
+        </v-card>
       </div>
     </v-container>
   </v-app>
@@ -29,11 +60,26 @@ export default {
         { text: 'Translation', value: 'trans' }
       ],
       items: [],
-
-      videourl: 'https://www.youtube.com/watch?v=asnQGz7BdfI',
+      captions: [
+        { original: 'this is original,this is original,this is original,this is originalthis is original,this is original,this is original',
+          translated: 'これは訳文ですこれは訳文ですこれは訳文ですこれは訳文ですこれは訳文ですこれは訳文ですこれは訳文ですこれは訳文です',
+        }
+      ],
+      currenttime: 90,
       videoid: 'asnQGz7BdfI',
-      dark: true
+      dark: true,
+      itemo: Array.from({length: 50}, (x, i) => i+1).map(i => ({
+      id: i,
+    }))
     }
+  },
+  computed: {
+    items () {
+      return Array.from({ length: this.length }, (k, v) => v + 1)
+    },
+    length () {
+      return 7000
+    },
   },
   mounted () {
     this.go()
@@ -84,5 +130,14 @@ h1{
 }
 #wrapper{
   padding:0px,100px
+}
+#captioncard{
+  bottom : 550px
+}
+#scroll{
+  display: flex;
+  left:300px;
+  bottom:370px;
+  
 }
 </style>
