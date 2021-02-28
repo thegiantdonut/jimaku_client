@@ -3,6 +3,7 @@
     <v-app>
       <v-toolbar dense>
             <v-toolbar-title style="cursor: pointer" @click="$router.push('/')">Jimaku</v-toolbar-title>
+            <v-switch :label="`Dark Theme`" v-model="darktheme" @change="goDark"></v-switch>
             <v-text-field
                     v-model="key1"
                     hide-details
@@ -29,19 +30,27 @@ Vue.use(Vuetify)
 
 export default ({
   name: 'app',
+  theme: {
+    dark: true,
+  },
   data: function () {
     return {
       key1: '',
-      apikey: 'AIzaSyDfgzWTkTn_xzB56TuhaLcxtvbggR2uows'
+      apikey: 'AIzaSyDfgzWTkTn_xzB56TuhaLcxtvbggR2uows',
+      darktheme: false
     }
   },
   methods: {
     search (event) {
       if (event.keyCode === 13 || event.keyCode === undefined) {
+        this.$vuetify.theme.dark = true
         router.push({ name: 'search', query: {q: this.key1} })
       }
+    },
+    goDark(){
+        this.$vuetify.theme.dark = this.darktheme
     }
-  }
+  },
 })
 
 </script>
