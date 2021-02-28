@@ -1,34 +1,39 @@
 <template>
   <v-app>
     <v-container>
-      <div id="wrapper">
-        <youtube videoid="lG0Ys-2d4MA" ref="youtube" @playing="playing" :playerVars="playerVars"/>
-        <v-card
-        id="scroll"
-        elevation="16"
-        max-width="400"
-        class="mx-auto"
-        >
-        <v-virtual-scroll
-        :items="captionlists"
-        :item-height="50"
-        height="300"
-        >
-        <template v-slot:default="{ item }">
-          <v-list-item @click="clicked">
-            <v-list-item-content>
-              <v-list-item-title>{{ item.original }}</v-list-item-title>
-              <v-list-item-subtitle>{{ item.translated }}</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </template>
-        </v-virtual-scroll>
+      <v-row>
+      <v-col>
+      <v-card>
+      <youtube videoid="lG0Ys-2d4MA" ref="youtube" :resize="true" @playing="playing" :playerVars="playerVars"/>
+      </v-card>
+      </v-col>
+      <v-col>
+        <v-card elevation="16">
+          <v-virtual-scroll
+          :items="captionlists"
+          :item-height="50"
+          height="350"
+          >
+          <template v-slot:default="{item}">
+            <v-list-item @click="clicked(item.time)">
+              <v-list-item-content>
+                <v-list-item-title>{{ item.original }}</v-list-item-title>
+                <v-list-item-subtitle>{{ item.translated }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+          </v-virtual-scroll>
+          </v-card>
+        </v-col>
+        </v-row>
+        <v-row>
+        <v-col>
+        <v-card id="captionbox">
+          <v-card-title>{{captionbox[0].original}}</v-card-title>
+          <v-card-subtitle>{{captionbox[0].translated}}</v-card-subtitle>
         </v-card>
-        <v-card id="captioncard" max-width = 640 min-height = 180>
-          <v-card-title>{{captions[0].original}}</v-card-title>
-          <v-card-subtitle>{{captions[0].translated}}</v-card-subtitle>
-        </v-card>
-      </div>
+        </v-col>
+        </v-row>
     </v-container>
   </v-app>
 </template>
@@ -57,12 +62,11 @@ export default {
       videoid: 'asnQGz7BdfI',
       // for vueyoutube
       captionlists: [],
-      captions: [
+      captionbox: [
         { original: '',
           translated: '',
         }
       ],
-      currenttime: 90,
       
     }
   },
@@ -70,6 +74,9 @@ export default {
     this.GetSubtitle()
   },
   methods: {
+    clicked(t){
+      this.$refs.youtube.player.seekTo(t);
+    },
     playing () {
       setInterval(() => {
         return this.$refs.youtube.player.getCurrentTime().then(result => {
@@ -81,13 +88,12 @@ export default {
               break
             }
           }
-          console.log(temp)
           if(temp===99999999){
-            this.captions[0].original = ''
-            this.captions[0].translated = ''
+            this.captionbox[0].original = ''
+            this.captionbox[0].translated = ''
           }else{
-            this.captions[0].original = this.captionlists[temp].original
-            this.captions[0].translated = this.captionlists[temp].translated
+            this.captionbox[0].original = this.captionlists[temp].original
+            this.captionbox[0].translated = this.captionlists[temp].translated
           }
           
         })
@@ -118,6 +124,7 @@ export default {
             //    original: result.transcript.text[i]._text, translated: res})
             //  })
             this.captionlists.push({
+              index: i,
               time: result.transcript.text[i]._attributes.start,
               original: result.transcript.text[i]._text,
               translated: 'test'})
@@ -129,19 +136,4 @@ export default {
 </script>
 
 <style scoped>
-h1{
-  font-size:111px
-}
-#wrapper{
-  padding:0px,100px
-}
-#captioncard{
-  bottom : 250px
-}
-#scroll{
-  display: flex;
-  left:300px;
-  bottom:370px;
-  
-}
 </style>

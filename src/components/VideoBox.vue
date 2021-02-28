@@ -21,7 +21,6 @@ export default {
 <style scoped>
 .flex{
     display: flex;
-    padding-top: 50px;
 }
 .title{
   padding-left:40px;

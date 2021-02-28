@@ -1,9 +1,14 @@
 <template>
-  <div id="app">
     <v-app>
       <v-toolbar dense>
+        <v-row >
+          <v-col>
             <v-toolbar-title style="cursor: pointer" @click="$router.push('/')">Jimaku</v-toolbar-title>
+          </v-col>
+          <v-col>
             <v-switch :label="`Dark Theme`" v-model="darktheme" @change="goDark"></v-switch>
+          </v-col>
+          <v-col cols=6>
             <v-text-field
                     v-model="key1"
                     hide-details
@@ -11,14 +16,18 @@
                     rounded
                     dense
                     single-line
-                    v-on:keydown.enter="search"
-                    append-icon="mdi-magnify" class="shrink mx-4">
+                    v-on:keydown.enter="search">
             </v-text-field>
+          </v-col>
+          <v-col>
             <v-btn @click="search" rounded>Go</v-btn>
+          </v-col>
+          <v-col>
+          </v-col>
+        </v-row>
         </v-toolbar>
       <router-view ref="cld"></router-view>
     </v-app>
-  </div>
 </template>
 
 <script>
@@ -56,13 +65,7 @@ export default ({
 </script>
 
 <style scoped>
-.v-text-field{
-  width: 800px;
-  left:200px;
-}
-#go-button{
-  right:100px;
-}
+
 </style>
 
 <style>
