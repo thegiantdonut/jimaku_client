@@ -2,7 +2,7 @@
   <v-app>
     <v-container>
       <div id="wrapper">
-        <youtube videoid="lG0Ys-2d4MA" ref="youtube"/>
+        <youtube videoid="lG0Ys-2d4MA" ref="youtube" @playing="playing" :playerVars="playerVars"/>
         <v-card
         id="scroll"
         elevation="16"
@@ -10,24 +10,18 @@
         class="mx-auto"
         >
         <v-virtual-scroll
-          
-          :items="itemo"
-          :item-height="65"
-          height="600"
+        :items="captionlists"
+        :item-height="50"
+        height="300"
         >
-          <template v-slot="{ item }">
-            <v-list-item :key="item.id" :value="item.id">
-              <v-list-item-content>
-                <v-list-item-title>
-                  {{ items[0].original }}
-                </v-list-item-title>
-                <v-list-item-subtitle>
-                  {{ items[0].trans }}
-                </v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-            <v-divider></v-divider>
-          </template>
+        <template v-slot:default="{ item }">
+          <v-list-item @click="clicked">
+            <v-list-item-content>
+              <v-list-item-title>{{ item.original }}</v-list-item-title>
+              <v-list-item-subtitle>{{ item.translated }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
         </v-virtual-scroll>
         </v-card>
         <v-card id="captioncard" max-width = 640 min-height = 180>
@@ -54,40 +48,54 @@ translate.key = 'AIzaSyDxS2jKXrE89JE0q2Gmw80CVFu38pxhL6k'
 export default {
   data () {
     return {
-      headers: [
-        { text: 'Time', value: 'time', width: 100 },
-        { text: 'Original', value: 'original' },
-        { text: 'Translation', value: 'trans' }
-      ],
-      items: [],
+      playerVars: {
+        // controls: 0,
+        showinfo: 0,
+        modestbranding: 1,
+        fs:0
+      },
+      videoid: 'asnQGz7BdfI',
+      // for vueyoutube
+      captionlists: [],
       captions: [
-        { original: 'this is original,this is original,this is original,this is originalthis is original,this is original,this is original',
-          translated: 'これは訳文ですこれは訳文ですこれは訳文ですこれは訳文ですこれは訳文ですこれは訳文ですこれは訳文ですこれは訳文です',
+        { original: '',
+          translated: '',
         }
       ],
       currenttime: 90,
-      videoid: 'asnQGz7BdfI',
-      dark: true,
-      itemo: Array.from({length: 50}, (x, i) => i+1).map(i => ({
-      id: i,
-    }))
+      
     }
   },
-  computed: {
-    items () {
-      return Array.from({ length: this.length }, (k, v) => v + 1)
-    },
-    length () {
-      return 7000
-    },
-  },
   mounted () {
-    this.go()
+    this.GetSubtitle()
   },
   methods: {
-    go () { 
+    playing () {
+      setInterval(() => {
+        return this.$refs.youtube.player.getCurrentTime().then(result => {
+          let temp = 99999999
+          for(let i=0;i < this.captionlists.length;i++){
+            if(this.captionlists[i].time < result + 0.5){
+              temp = i
+            }else{
+              break
+            }
+          }
+          console.log(temp)
+          if(temp===99999999){
+            this.captions[0].original = ''
+            this.captions[0].translated = ''
+          }else{
+            this.captions[0].original = this.captionlists[temp].original
+            this.captions[0].translated = this.captionlists[temp].translated
+          }
+          
+        })
+      }, 200);
+    },
+    GetSubtitle () { 
       let id = this.$route.query.videoid
-      this.items = []
+      this.captionlists = []
       this.$refs.youtube.player.loadVideoById(id)
       const lang = 'en'
       let result
@@ -107,20 +115,16 @@ export default {
             // translate(result.transcript.text[i]._text, 'ja')
             //  .then((res) => {
             //    this.items.push({time: result.transcript.text[i]._attributes.start,
-            //    original: result.transcript.text[i]._text, trans: res})
+            //    original: result.transcript.text[i]._text, translated: res})
             //  })
-            this.items.push({
+            this.captionlists.push({
               time: result.transcript.text[i]._attributes.start,
               original: result.transcript.text[i]._text,
-              trans: 'test'})
+              translated: 'test'})
           }
         })
     }
   },
-  beforeMount () {
-  },
-  onRowClick: function () {
-  }
 }
 </script>
 
@@ -132,7 +136,7 @@ h1{
   padding:0px,100px
 }
 #captioncard{
-  bottom : 550px
+  bottom : 250px
 }
 #scroll{
   display: flex;
