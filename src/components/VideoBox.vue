@@ -1,11 +1,15 @@
 <template>
   <v-app>
     <v-container>
-      <div class="flex">
-        <img class="item" v-bind:src="pic">
-        <router-link class="title"  :to="{ path: 'video', query: { videoid: videoid }}">{{ title }}</router-link>
-        <p class="description">{{desc}}</p>
-      </div>
+    <v-row>
+      <v-col>
+        <v-img v-bind:src="pic"></v-img>
+        </v-col>
+        <v-col>
+        <router-link :to="{ path: 'video', query: { videoid: videoid }}">{{ title }}</router-link>
+        <p>{{desc}}</p>
+        </v-col>
+    </v-row>
     </v-container>
   </v-app>
 </template>
@@ -17,16 +21,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.flex{
-    display: flex;
-}
-.title{
-  padding-left:40px;
-  font-size:40px;
-}
-.description{
-  display:block
-}
+
 </style>

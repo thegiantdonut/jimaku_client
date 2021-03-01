@@ -1,12 +1,23 @@
 <template>
   <v-app>
-    <li id="result" v-for="res in results" v-bind:key="res.title">
-      <vid :title="res.title" :desc="res.desc" :pic="res.pic" :videoid="res.videoid"> </vid>
-    </li>
+    <v-container>
+      <v-virtual-scroll :items="results" :item-height="300" height="1350">
+        <template v-slot:default="{item}">
+          <v-list-item @click="$router.push({ path: '/video', query: { videoid: item.videoid } })" >
+              <v-img v-bind:src="item.pic"></v-img>
+              <v-list-title>{{item.title}}</v-list-title>
+              <v-list-subtitle>{{item.desc}}</v-list-subtitle>
+          </v-list-item>
+        </template>
+      </v-virtual-scroll>
+    </v-container>
   </v-app>
 </template>
 
 <script>
+//<v-list v-for="res in results" v-bind:key="res.title">
+      
+     // </v-list>
 import Vue from 'vue'
 import VueYoutube from 'vue-youtube'
 import vid from './VideoBox'
@@ -24,6 +35,9 @@ export default {
     return {
       results: []
     }
+  },
+  clicked () {
+
   },
   created () {
     this.fetchData()
@@ -60,23 +74,10 @@ export default {
   },
   watch: {
     '$route': 'fetchData'
-  },
-  onRowClick: function () {
   }
 }
 </script>
 
 <style scoped>
-h1{
-  font-size:111px
-}
-.v-text-field{
-      width: 800px;
-}
-#wrapper{
-  padding:0px,100px
-}
-#id{
-  padding-left:1001px
-}
+
 </style>

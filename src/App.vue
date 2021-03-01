@@ -40,7 +40,6 @@ Vue.use(Vuetify)
 export default ({
   name: 'app',
   theme: {
-    dark: true,
   },
   data: function () {
     return {
