@@ -1,8 +1,10 @@
 <template>
   <v-app>
+    <v-container>
     <div class="hello">
       <h1>{{ msg }}</h1>
     </div>
+    </v-container>
   </v-app>
 </template>
 

@@ -55,10 +55,10 @@ export default ({
         router.push({ name: 'search', query: {q: this.key1} })
       }
     },
-    goDark(){
-        this.$vuetify.theme.dark = this.darktheme
+    goDark () {
+      this.$vuetify.theme.dark = this.darktheme
     }
-  },
+  }
 })
 
 </script>

@@ -1,12 +1,15 @@
 <template>
   <v-app>
     <v-container>
-      <v-virtual-scroll :items="results" :item-height="300" height="1350">
+      <v-card>
+        <p>ここでは動画を表示しています</p>
+      </v-card>
+      <v-virtual-scroll :items="results" :item-height="300">
         <template v-slot:default="{item}">
           <v-list-item @click="$router.push({ path: '/video', query: { videoid: item.videoid } })" >
-              <v-img v-bind:src="item.pic"></v-img>
-              <v-list-title>{{item.title}}</v-list-title>
-              <v-list-subtitle>{{item.desc}}</v-list-subtitle>
+              <v-img max-width="400" max-height="300" v-bind:src="item.pic"></v-img>
+              <p>{{item.title}}</p>
+              <p>{{item.desc}}</p>
           </v-list-item>
         </template>
       </v-virtual-scroll>
@@ -15,12 +18,9 @@
 </template>
 
 <script>
-//<v-list v-for="res in results" v-bind:key="res.title">
-      
-     // </v-list>
 import Vue from 'vue'
 import VueYoutube from 'vue-youtube'
-import vid from './VideoBox'
+import Video from './Video.vue'
 Vue.use(VueYoutube)
 const apikey = 'AIzaSyDxS2jKXrE89JE0q2Gmw80CVFu38pxhL6k'
 let result, lang
@@ -29,7 +29,7 @@ export default {
     apikey
   },
   components: {
-    vid
+    Video
   },
   data () {
     return {
